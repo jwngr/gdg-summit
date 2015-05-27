@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "messages": {
+      ".read": true,
+      "$messageId": {
+        ".write": "!data.exists()",
+
+        ".validate": "newData.hasChildren(['username', 'text'])",
+
+        "username": {
+          ".validate": "newData.isString() && newData.val().length < 100"
+        },
+
+        "text": {
+          ".validate": "newData.isString() && newData.val().length < 100"
+        },
+
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase Chat</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.2.5/firebase.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 style="text-align: center">Firebase Chat</h1>
+
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+          <!-- New message panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">New Message</div>
+            <div class="panel-body">
+              <div class="input-group" style="width: 100%; text-align: center;">
+                <!-- Login button -->
+                <button id="loginButton" style="width: 100%; margin-bottom: 10px">Login With Twitter</button>
+
+                <!-- Logout button -->
+                <button id="logoutButton" style="width: 100%; margin-bottom: 10px">Logout</button>
+
+                <!-- Logged in text -->
+                <p id="loggedInText" style="width: 100%; margin-bottom: 10px"><p>
+
+                <!-- Username input -->
+                <!-- <input id="username" type="text" placeholder="Username" style="width: 100%; margin-bottom: 10px" /> -->
+
+                <!-- New message input -->
+                <input id="newMessage" type="text" placeholder="Type a message..." style="width: 100%" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Message list panel -->
+          <div class="panel panel-default">
+            <div class="panel-heading">Messages</div>
+            <div class="panel-body">
+              <!-- Message list -->
+              <div id="messageList" class="list-group" style="margin-bottom: 0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
