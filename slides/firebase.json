@@ -1,0 +1,9 @@
+{
+  "firebase": "gdg-summit-slides",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

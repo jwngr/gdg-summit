@@ -1,0 +1,465 @@
+<!doctype HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Building App With Firebase</title>
+
+    <meta name="description" content="Building App With Firebase">
+    <meta name="author" content="Jacob Wenger">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/firebase.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <script>
+    window.addEventListener('load', installCounter);
+
+    function installCounter() {
+      var devsRef = new Firebase("https://firebase-website.firebaseio.com/stats/signups");
+      var counterSpan = document.getElementById('current-devs');
+      devsRef.on("value", function (snap) {
+        // Use thousand separator in counter.
+        counterSpan.textContent = snap.val().toLocaleString();
+      });
+    }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <small id="era"></small>
+
+      <div class="slides">
+
+        <!-- HOME -->
+        <section title="">
+          <br><br>
+          <h3>Building Apps With Firebase</h3>
+          <img src="images/firebase-logo.png" class="no-style">
+          <br> <br>
+          <h5>Jacob Wenger / <a href="http://twitter.com/_jwngr">@_jwngr</a></h5>
+          <h5>GDG Global Summit / <span style="color: #fec324">May 27, 2015</span></h5>
+        </section>
+
+        <!-- THE PROBLEM: BUILDING APPS IS HARD -->
+        <section>
+          <p class="text-small">Realtime, feature-rich apps are here</p>
+          <img src="images/gdocs4.gif" alt="gdocs" class="no-style" height="500" />
+        </section>
+
+        <section>
+          <p class="text-small">Building those apps is hard</p>
+          <img src="images/backend-reqs.gif" alt="" class="white-bg no-style" height="500" />
+        </section>
+
+        <!-- THE SOLUTION: FIREBASE IS YOUR BACKEND -->
+        <section>
+          <h2>Firebase</h2>
+          <img src="images/firebase-logo.png" class="no-style era-point">
+          <br>
+          <p class="text-cream">A <span class="text-discs">powerful platform</span> for</p>
+          <p class="text-cream">building extraordinary apps</p>
+        </section>
+
+        <section>
+          <p class="text-medium">Firebase Is Your Backend</p>
+          <img src="images/data-box.png" class="no-style framework-logo">
+          <img src="images/login-box.png" class="no-style framework-logo">
+          <img src="images/security-box.png" class="no-style framework-logo">
+          <img src="images/hosting-box.png" class="no-style framework-logo">
+        </section>
+
+        <!-- WHAT IS FIREBASE - REALTIME DATABASE -->
+        <section>
+          <h2>Realtime Database</h2>
+          <p class="era-point">NoSQL JSON data store</p>
+          <p class="era-point">Cross-platform client-side SDKs</p>
+          <p class="era-point">Offline out-of-the-box</p>
+          <p class="era-point">Auto-scaling</p>
+          <p class="era-point">RESTful API</p>
+        </section>
+
+        <section>
+          <p class="text-medium">Realtime</p>
+          <p class="era-point text-cream">
+            Whenever <span class="text-discs">data is updated in Firebase</span>,<br />
+            it sends the update down to every<br />
+            <span class="text-tarheel">listening client</span>
+          </p>
+        </section>
+
+        <section>
+          <img src="/images/realtimeSync.gif" alt="" class="no-style">
+        </section>
+
+        <section>
+          <p class="text-medium">Cross-platform</p>
+          <img src="/images/platforms.png" alt="" class="no-style">
+        </section>
+
+        <section>
+          <p class="text-medium">Storing Data</p>
+          <pre>
+            <code data-trim class="javascript">
+var ref = new Firebase("https://gdg-summit.firebaseio-demo.com");
+ref.child("location").set({
+  city: "San Francisco",
+  country: "USA"
+});
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">Storing Data</p>
+          <pre>
+            <code data-trim class="javascript">
+{
+  "location": {
+    "city": "San Francisco",
+    "country": "USA"
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">Reading Data</p>
+          <pre>
+            <code data-trim class="javascript">
+Firebase ref = new Firebase("https://gdg-summit.firebaseio-demo.com");
+ref.child("location").addValueEventListener(new ValueEventListener() {
+  @Override
+  public void onDataChange(DataSnapshot snapshot) {
+    String city = (String) snapshot.child("city").getValue();
+    System.out.println(city);  // "San Francisco"
+  }
+
+  @Override
+  public void onCancelled(FirebaseError error) { }
+});
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">Querying Data</p>
+          <pre>
+            <code data-trim class="javascript">
+{
+  "messages": {
+    "message1": { "text": "Hello, world",     "country": "USA" },
+    "message2": { "text": "Bonjour monde",    "country": "France" },
+    "message3": { "text": "Hello, world",     "country": "England" },
+    "message4": { "text": "你好世界",          "country": "China" },
+    "message5": { "text": "γειά σου κόσμος",  "country": "Greece" },
+    ...
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">Querying Data</p>
+          <pre>
+            <code data-trim class="javascript">
+let ref = Firebase(url:"https://gdg-summit.firebaseio-demo.com")
+let messagesRef = ref.childByAppendingPath("messages");
+
+let query = messagesRef.queryOrderedByChild("text");
+query = query.queryEqualToValue("Hello, world");
+query = query.queryLimitedToLast(5);
+
+query.observeEventType(.ChildAdded, withBlock: { snapshot in
+  println(snapshot.country);  // USA, England, etc.
+});
+            </code>
+          </pre>
+        </section>
+
+        <!-- LIVE CODING  -->
+        <section>
+          <h2>Let's Code</h2>
+          <img src="https://i.imgur.com/VhlQKh.jpg" />
+        </section>
+
+        <!-- WHAT IS FIREBASE - HOSTING -->
+        <section>
+          <h2>Hosting</h2>
+          <p class="era-point">Free static asset hosting</p>
+          <p class="era-point">SSL certificate</p>
+          <p class="era-point">Global CDN</p>
+          <p class="era-point">Single command deploys</p>
+          <p class="era-point">One-click rollbacks</p>
+          <p class="era-point">Custom domains</p>
+        </section>
+
+        <!-- HOSTING DEMO -->
+        <section>
+          <h2>Hosting Demo</h2>
+          <img src="./images/snailRocket.gif" />
+        </section>
+
+        <section>
+          <p style="font-size: 50px;">https://gdg-summit.firebaseapp.com</p>
+        </section>
+
+        <!-- WHAT IS FIREBASE - AUTHENTICATION -->
+        <section>
+          <h2>Authentication</h2>
+          <p class="era-point">No server required</p>
+          <p class="era-point">Anonymous</p>
+          <p class="era-point">Email / password</p>
+          <p class="era-point">Facebook, Twitter, Google, etc.</p>
+          <p class="era-point">Custom</p>
+        </section>
+
+        <section>
+          <p class="text-medium">Authenticating Users</p>
+          <pre>
+            <code data-trim class="javascript">
+var ref = new Firebase("https://gdg-summit.firebaseio-demo.com");
+
+// Login anonymously
+ref.authAnonymously(function(error, authData) {
+  console.log(authData);
+});
+
+// Login with Google
+ref.authWithOAuthPopup("google", function(error, authData) {
+  console.log(authData);
+});
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">Detecting Auth State</p>
+          <pre>
+            <code data-trim class="javascript">
+var ref = new Firebase("https://gdg-summit.firebaseio-demo.com");
+
+// Listen for authenticated users
+ref.onAuth(function(authData) {
+  if (authData) {
+    console.log("User is logged in");
+  } else {
+    console.log("User is logged out");
+  }
+});
+            </code>
+          </pre>
+        </section>
+
+        <!-- LIVE CODING - AUTH -->
+        <section>
+          <h2>Let's Code Again</h2>
+          <img src="https://media0.giphy.com/media/13HgwGsXF0aiGY/200.gif" />
+        </section>
+
+        <section>
+          <p style="font-size: 50px;">https://gdg-summit.firebaseapp.com</p>
+        </section>
+
+        <!-- WHAT IS FIREBASE - SECURITY -->
+        <section>
+          <h2>Security</h2>
+          <p class="era-point">Declarative rules language</p>
+          <p class="era-point">JavaScript-like syntax</p>
+          <p class="era-point">Executed server-side</p>
+          <p class="era-point">Authorization</p>
+          <p class="era-point">Schema validation</p>
+        </section>
+
+        <section>
+          <p class="text-medium">Securing Data</p>
+          <pre>
+            <code data-trim class="javascript">
+{
+  "rules": {
+    "foo": {
+      ".read": true,
+      ".write": "!data.exists()"
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">User-based Security</p>
+          <pre>
+            <code data-trim class="javascript">
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "auth.uid === $uid"
+      }
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <p class="text-medium">Validating Schema</p>
+          <pre>
+            <code data-trim class="javascript">
+{
+  "rules": {
+    // ...
+    "profile": {
+      ".validate": "newData.hasChildren(['id', 'name'])",
+      "id": {
+        ".validate": "newData.isNumber() && newData.val() > 0"
+      },
+      "name": {
+        ".validate": "newData.isString() && newData.val().length < 50"
+      },
+      "$other": {
+        ".validate": false
+      }
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <!-- WHAT IS FIREBASE - KITCHEN SINK -->
+        <section>
+          <h2>And More...</h2>
+          <p class="era-point">Angular, React, Ember, Backbone bindings</p>
+          <p class="era-point">GeoFire (realtime geolocation)</p>
+          <p class="era-point">Firepad (realtime text editing)</p>
+          <p class="era-point">Open Data Sets</p>
+          <p class="era-point">More coming soon...</p>
+        </section>
+
+        <!-- REITERATE PROBLEM AND SOLUTION -->
+        <section>
+          <p class="text-medium">Firebase Is Your Backend</p>
+          <img src="images/data-box.png" class="no-style framework-logo">
+          <img src="images/login-box.png" class="no-style framework-logo">
+          <img src="images/security-box.png" class="no-style framework-logo">
+          <img src="images/hosting-box.png" class="no-style framework-logo">
+        </section>
+
+        <section>
+          <p class="text-medium">Focus On Your App</p>
+          <p class="era-point">
+            Join the <span id="current-devs" class="text-tarheel">193,000+</span> other registered devs<br />
+            who are building extraordinary apps
+          </p>
+          <p class="era-point">Stop messing with servers</p>
+          <p class="era-point">Leave the hard stuff to us</p>
+        </section>
+
+        <!-- GET STARTED NOW -->
+        <section>
+          <p class="text-medium">Get Started Now!</p>
+          <p class="era-point text-tarheel">
+            <b><a class="text-tarheel" href="https://firebase.com/docs">https://firebase.com/docs</a></b>
+          </p>
+          <img src="./images/docs.png" />
+        </section>
+
+        <!-- CLOSING SLIDE -->
+        <section>
+          <img src="images/firebase-logo.png" class="no-style era-point">
+          <h5>Jacob Wenger / <a href="http://twitter.com/_jwngr">@_jwngr</a></h5>
+          <h5>Core Developer / <a href="http://twitter.com/firebase">@Firebase</a></h5>
+          <p><b><a class="text-tarheel" href="https://github.com/jwngr/gdg-summit">https://github.com/jwngr/gdg-summit</a><b/></p>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'concave', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+    <script>
+
+      function signPostEra( event ) {
+        var title = event.currentSlide.attributes.title;
+
+        if(title) {
+          var era = document.getElementById('era');
+          era.innerText = title.value;
+        }
+      }
+
+      Reveal.addEventListener( 'ready', function( event ) {
+        signPostEra( event );
+      });
+
+      Reveal.addEventListener( 'slidechanged', function( event ) {
+        signPostEra( event );
+      });
+
+    </script>
+  </body>
+</html>
