@@ -11,8 +11,6 @@ The slides from my presentation can be found [here](https://gdg-summit-slides.fi
 The source files are in the [`./slides`](./slides) directory of this repo. See the
 [README](./slides/README.md) in that directory for instructions on how to build it.
 
-Coming soon!
-
 ## Demo
 
 The chat app I build live during my presentation can be found [here](https://gdg-summit.firebaseapp.com/).
